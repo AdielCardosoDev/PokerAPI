@@ -1,45 +1,41 @@
 import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
-import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert } from 'react-native';
+import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Image } from 'react-native';
 import api from './services/api';
 
 export default function App() {
   // Variaveis para API
   const [Poke, setPoke] = useState({});
+
   // Variaveis para buscar por nome
   const [searcpoke, setSearcPoke] = useState('');
 
   //Função onde vai ser feito o get da api de todos os nomes
   const consulta = async () => {  
-      const response = await api.get(`pokemon`);
-      setPoke(response.data.results);   
-    }
+      const response = await api.get(`${searcpoke}`);
+      setPoke(response.data.results);
+          
+    }  
 
-  //Teste
-  //const consulta = async () => {
-  //  const response = await api.get(`pokemon`);
-  //  setPoke(response.data.results);
-  //}
-
-  // Função para exibir a lista
+  // Função para exibir a lista na tela
   function PokemonShow(item){
-    const {name} = item.item
+    const {name, url} = item.item
+    const pokemonNumber = url.replace('https://pokeapi.co/api/v2/pokemon/', '').replace('/', '')
+    const imageURL = 'https://pokeres.bastionbot.org/images/pokemon/'+pokemonNumber+'.png'
     return(
       <View style={styles.listaPoker} >
         <Text style={styles.poke}>{name}</Text>
+        <Image style={{width: 50, height: 50}} source={{uri: imageURL}} />
       </View>
     )
   } 
-
-
-
   return (
     <View style={styles.container}>
       <Text style={styles.titulo} >PokeAPI</Text>
 
       <TextInput
       style={styles.input} 
-      placeholder="Digite aqui" 
+      placeholder="Digite aqui"
       value={searcpoke}
       onChangeText={(text) => setSearcPoke(text)}
      />
@@ -49,7 +45,7 @@ export default function App() {
       >
         <Text  style={styles.TextBTN} >Buscar</Text>
       </TouchableOpacity>
-
+      
       <FlatList 
       data={Poke}
       keyExtractor={(pokemon) => pokemon.name}
@@ -65,22 +61,35 @@ export default function App() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: '#fff',
+    backgroundColor: '#EDF2F4',
     alignItems: 'center',
     justifyContent: 'center',
   },
   titulo:{
-    fontSize: 40
+    marginTop:30,
+    fontSize: 40,
+    color: '#D90429',
+    fontWeight: 'bold'
   },
   input:{
-    borderColor: "red",
+    borderColor: "#2B2D42",
+    backgroundColor:'#fff',
     borderWidth: 1,
-    width: 200,
-    height: 40
+    width: 250,
+    height: 40,
+    padding:5,
+    borderRadius:5
+    
   },
   TextBTN:{
     fontSize: 18,
+    padding:5,
+    width:100,
     margin: 10,
+    textAlign: 'center',
+    color: '#fff',
+    borderRadius: 5,
+    backgroundColor: '#2B2D42'
 
   },
   Resultado:{
@@ -90,11 +99,12 @@ const styles = StyleSheet.create({
   },
   poke:{
     fontSize:20,
-    backgroundColor: "#ffdd",
-    margin: 10,  
+    fontWeight: 'bold',    
+    margin: 10, 
+    color: '#EF233C' 
   },
   listaPoker:{
-    backgroundColor:'#ffdddd',
-    width: 300
+    backgroundColor:'#EDF2F4',
+    width: 400
   }
 });
