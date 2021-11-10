@@ -2,6 +2,7 @@ import { StatusBar } from 'expo-status-bar';
 import React, { useState } from 'react';
 import { FlatList, StyleSheet, Text, TextInput, TouchableOpacity, View, Alert, Image } from 'react-native';
 import api from './services/api';
+import { AntDesign } from '@expo/vector-icons';
 
 export default function App() {
   // Variaveis para API
@@ -25,7 +26,7 @@ export default function App() {
     return(
       <View style={styles.listaPoker} >
         <Text style={styles.poke}>{name}</Text>
-        <Image style={{width: 50, height: 50}} source={{uri: imageURL}} />
+        <Image style={{width: 50, height: 50, }} source={{uri: imageURL}} />
       </View>
     )
   } 
@@ -33,7 +34,8 @@ export default function App() {
     <View style={styles.container}>
       <Text style={styles.titulo} >PokeAPI</Text>
 
-      <TextInput
+      <View style={styles.pesquisa} >
+        <TextInput
       style={styles.input} 
       placeholder="Digite aqui"
       value={searcpoke}
@@ -41,10 +43,11 @@ export default function App() {
      />
 
       <TouchableOpacity 
-      onPress={consulta}
+      onPress={consulta}      
       >
-        <Text  style={styles.TextBTN} >Buscar</Text>
+        <AntDesign name="search1" size={24} color="black" style={styles.TextBTN} />
       </TouchableOpacity>
+      </View>
       
       <FlatList 
       data={Poke}
@@ -65,6 +68,12 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
+
+  pesquisa:{
+    flexDirection:'row',
+    alignItems: 'center'
+  },
+
   titulo:{
     marginTop:30,
     fontSize: 40,
@@ -83,9 +92,8 @@ const styles = StyleSheet.create({
   },
   TextBTN:{
     fontSize: 18,
-    padding:5,
-    width:100,
-    margin: 10,
+    padding:10,    
+    margin: 5,
     textAlign: 'center',
     color: '#fff',
     borderRadius: 5,
